@@ -1,0 +1,33 @@
+<?xml version="1.0" ?>
+
+<launch>
+	<!--  ****** Args ****** -->
+	<arg name="num_path" default="300" />
+	
+	<!--  ****** Global Parameters ****** -->
+	<param name="/use_sim_time" value="true"/>
+
+	<!--  ****** Stage Simulator ******  -->
+	<node pkg="stage_ros" type="stageros" name="stageros" args="$(find simulacion)/stage/maze_diff_drive.world">
+	<!-- <node pkg="stage_ros" type="stageros" name="stageros" args="$(find simulacion)/stage/empty_box.world"> -->
+		<remap from="base_scan" to="scan"/>
+	</node>
+
+	<!--  ****** Nodes ****** -->	
+	<node pkg="turtlesim" type="turtle_teleop_key" name="cmd_node">
+		<remap from="/turtle1/cmd_vel" to="/cmd_vel" />
+	</node>
+	<node pkg="simulacion" type="pathnode.py" name="path_node">
+		<param name="/num_path" value="$(arg num_paths)" />
+	</node>
+
+	<!--  ****** Maps *****  -->
+	<!-- <node name="map_server" pkg="map_server" type="map_server" args="$(find simulacion)/maps/maze.yaml" output="screen"> -->
+	<!-- <node name="map_server" pkg="map_server" type="map_server" args="$(find simulacion)/maps/empty_box.yaml" output="screen"> -->
+		<!-- <param name="frame_id" value="map"/> -->
+	<!-- </node> -->
+
+	<!--  ****** Visualisation ******  -->
+	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find simulacion)/cfg/rviz_map_teleo.rviz"/>
+
+</launch>

@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+
+<launch>
+	<!--  ************** Global Parameters ***************  -->
+	<param name="/use_sim_time" value="true"/>
+
+	<!--  ************** Stage Simulator ***************  -->
+	<!-- <node pkg="stage_ros" type="stageros" name="stageros" args="$(find simulacion)/stage/maze_diff_drive.world"> -->
+	<node pkg="stage_ros" type="stageros" name="stageros" args="$(find simulacion)/stage/empty_box.world">
+		<remap from="base_scan" to="scan"/>
+	</node>
+
+	<!--  ****** Maps *****  -->
+	<!-- <node name="map_server" pkg="map_server" type="map_server" args="$(find simulacion)/maps/maze.yaml" output="screen"> -->
+	<node name="map_server" pkg="map_server" type="map_server" args="$(find simulacion)/maps/empty_box.yaml" output="screen">
+		<param name="frame_id" value="map"/>
+	</node>
+
+	<!--  **************** Visualisation ****************  -->
+	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find simulacion)/cfg/rviz_navigation.rviz"/>
+
+</launch>

@@ -1,0 +1,47 @@
+<?xml version="1.0" ?>
+
+<launch>
+	<!--  ************** Global Parameters ***************  -->
+	<param name="/use_sim_time" value="true"/>
+
+	<!--  ************** Stage Simulator ***************  -->
+	<node pkg="stage_ros" type="stageros" name="stageros" args="$(find simulacion)/stage/lab.world">
+		<remap from="base_scan" to="scan"/>
+	</node>
+
+	<!--  ************** Navigation ***************  -->
+	<node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+		<!-- ********** Costmap Params ********** -->
+		<rosparam file="$(find simulacion)/cfg/costmap_common_params.yaml" command="load" ns="global_costmap" />
+		<rosparam file="$(find simulacion)/cfg/costmap_common_params.yaml" command="load" ns="local_costmap" />
+		<rosparam file="$(find simulacion)/cfg/local_costmap_params.yaml" command="load" />
+		<rosparam file="$(find simulacion)/cfg/global_costmap_params.yaml" command="load" />
+		<rosparam file="$(find simulacion)/cfg/teb_local_planner_params_mod.yaml" command="load" />
+		<!-- ********** Global Planner ********** -->
+		<param name="base_global_planner" value="global_planner/GlobalPlanner" />
+		<!-- ********** Local Planner ********** -->
+    		<param name="base_local_planner" value="teb_local_planner/TebLocalPlannerROS" />
+		<!-- ********** Freq planner & controller ********** -->		
+		<param name="planner_frequency" value="1.0" />
+		<param name="planner_patience" value="5.0" />		
+		<param name="controller_frequency" value="5.0" />
+		<param name="controller_patience" value="15.0" />
+	</node>
+
+	<!--  ****** Maps *****  -->
+	<node name="map_server" pkg="map_server" type="map_server" args="$(find simulacion)/maps/lab.yaml" output="screen">
+		<param name="frame_id" value="map"/>
+	</node>
+
+	<!--  ****** AMCL *****  -->
+	<node pkg="amcl" type="amcl" name="amcl" output="screen">
+		<rosparam file="$(find simulacion)/cfg/amcl_params.yaml" command="load" />
+		<param name="initial_pose_x" value="14.4"/>
+		<param name="initial_pose_y" value="12.0"/>
+		<param name="initial_pose_a" value="0"/>
+	</node>
+
+	<!--  **************** Visualisation ****************  -->
+	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find simulacion)/cfg/rviz_navigation.rviz"/>
+
+</launch>

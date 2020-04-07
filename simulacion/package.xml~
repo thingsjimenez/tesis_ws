@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>simulacion</name>
+  <version>0.1.0</version>
+  <description>The simulacion package of global and local planners</description>
+
+  <maintainer email="sjimenez@todo.todo">sjimenez</maintainer>
+	<author email="sjimenez@todo.todo">sjimenez</author>
+  <license>BSD</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+	<run_depend>stage_ros</run_depend>
+  <run_depend>teb_local_planner</run_depend>
+  <run_depend>move_base</run_depend>
+  <run_depend>map_server</run_depend>
+  <run_depend>amcl</run_depend>
+
+  <export>
+
+  </export>
+</package>
