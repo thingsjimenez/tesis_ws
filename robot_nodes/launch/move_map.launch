@@ -1,0 +1,26 @@
+<?xml version="1.0" ?>
+<launch>
+  <arg name="3d_sensor" default="$(env TURTLEBOT_3D_SENSOR)"/>
+	<!-- Map Server -->
+  <arg name="map_file" default="mapcasant.yaml"/>
+	<node name="map_server" pkg="map_server" type="map_server" args="$(find tesis_nodes)/maps/$(arg map_file)" output="screen">
+    <param name="frame_id" value="map"/>
+  </node>
+	
+	<!-- AMCL -->
+	<arg name="init_pose_x" default="0.673"/>
+	<arg name="init_pose_y" default="1.669"/>
+	<arg name="init_pose_a" default="-1.571"/>
+	<include file="$(find turtlebot_navigation)/launch/includes/amcl/$(arg 3d_sensor)_amcl.launch.xml">
+		<arg name="initial_pose_x" value="$(arg init_pose_x)"/>
+		<arg name="initial_pose_y" value="$(arg init_pose_y)"/>
+		<arg name="initial_pose_a" value="$(arg init_pose_a)"/>
+	</include>
+
+  <!-- move base -->
+  <arg name="custom_param_file" default="$(find turtlebot_navigation)/param/$(arg 3d_sensor)_costmap_params.yaml"/>
+  <include file="$(find tesis_nodes)/launch/move_basebot.launch">
+    <arg name="custom_param_file" value="$(arg custom_param_file)"/>
+  </include>
+
+</launch>

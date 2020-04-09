@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+<launch>
+	<!-- Este es el nodo minimo para iniciar el robot movil kobuki -->
+	<include file="$(find kobuki_node)/launch/minimal.launch" />
+	<include file="$(find freenect_launch)/launch/freenect.launch" />
+	<node name="depth_2_scan" pkg="depthimage_to_laserscan" type="depthimage_to_laserscan" args="image:=/camera/depth/image_raw" />
+</launch>
