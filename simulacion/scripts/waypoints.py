@@ -12,6 +12,13 @@ waypoints_lab = [
 	[(12.0, 14.0, 0.0), (0.0, 0.0, 0.0, 1.0)]
 ]
 
+
+waypoints_casa = [
+  [(-3.0, 1.50, 0.0), (0.0, 0.0, 0.0, 0.0)],
+  [(0.66, 1.75, 0.0), (0.0, 0.0, 0.0, 1.0)],
+  [(1.95, 1.15, 0.0), (0.0, 0.0, 0.0, 1.0)]
+]
+
 def goal_pose(pose):
 	goal_pose = MoveBaseGoal()
 	goal_pose.target_pose.header.frame_id = 'map'
@@ -30,7 +37,7 @@ if __name__ == '__main__':
 	client.wait_for_server()
 	random.shuffle(waypoints_lab)
 	while not rospy.is_shutdown():
-		for pose in waypoints_lab:
+		for pose in waypoints_casa:
 			goal = goal_pose(pose)
 			client.send_goal(goal)
 			client.wait_for_result()
