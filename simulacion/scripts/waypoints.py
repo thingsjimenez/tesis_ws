@@ -14,9 +14,14 @@ waypoints_lab = [
 
 
 waypoints_casa = [
-  [(-3.0, 1.50, 0.0), (0.0, 0.0, 0.0, 0.0)],
+  [(0.00, 1.21, 0.0), (0.0, 0.0, 1.0, 0.0)],
   [(0.66, 1.75, 0.0), (0.0, 0.0, 0.0, 1.0)],
   [(1.95, 1.15, 0.0), (0.0, 0.0, 0.0, 1.0)]
+]
+
+waypoints_fp = [
+  [(-0.784, -1.303, 0.000), (0.000, 0.000, 0.984, -0.179)],
+  [(-2.036, -4.448, 0.000), (0.000, 0.000, 0.178,  0.984)]
 ]
 
 def goal_pose(pose):
@@ -37,7 +42,7 @@ if __name__ == '__main__':
 	client.wait_for_server()
 	random.shuffle(waypoints_lab)
 	while not rospy.is_shutdown():
-		for pose in waypoints_casa:
+		for pose in waypoints_fp:
 			goal = goal_pose(pose)
 			client.send_goal(goal)
 			client.wait_for_result()

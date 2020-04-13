@@ -2,7 +2,7 @@
 #Date : 15/12/2019
 
 #define el objeto a utilizar para floorplans
-include "robots/turtlebot.inc"
+include "/home/sjimenez/ros/tesis_ws/src/simulacion/stage/robots/turtlebot.inc"
 
 define floorplan model
 (
@@ -42,7 +42,7 @@ floorplan
  name "map1"
  size [28.8 24.0 0.35]
  pose [14.4 12.0 0.0 0.0]
- bitmap "../maps/map1.png"
+ bitmap "/home/sjimenez/ros/tesis_ws/src/simulacion/maps/lab.png"
 )
 
 turtlebot

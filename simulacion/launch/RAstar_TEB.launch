@@ -16,7 +16,7 @@
 		<rosparam file="$(find simulacion)/cfg/costmap_common_params.yaml" command="load" ns="local_costmap" />
 		<rosparam file="$(find simulacion)/cfg/local_costmap_params.yaml" command="load" />
 		<rosparam file="$(find simulacion)/cfg/global_costmap_params.yaml" command="load" />
-		<rosparam file="$(find simulacion)/cfg/teb_local_planner_params_mod.yaml" command="load" />
+		<rosparam file="$(find simulacion)/cfg/teb_local_planner_params.yaml" command="load" />
 		<!-- ********** Global Planner ********** -->
 		<param name="base_global_planner" value="RAstar_planner/RAstarPlannerROS" />
 		<!-- ********** Local Planners ********** -->
