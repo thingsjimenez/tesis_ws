@@ -15,23 +15,19 @@ class GuardarDatos():
 		rospy.loginfo('Se inicia el nodo de guardar datos')
 
 		self.path_pub = rospy.Publisher('/Path_Robot', Path, queue_size=1)
-		self.result_sub = rospy.Subscriber("/move_base/result", MoveBaseActionResult, self.result_cb) 
-		self.goal_sub = rospy.Subscriber('/move_base_simple/goal',PoseStamped, self.goal_cb)
+		self.result_sub = rospy.Subscriber("/move_base/result", MoveBaseActionResult, self.result_cb)
 		self.odom_sub = rospy.Subscriber('/odom', Odometry, self.odom_cb)
 		self.core_sub = rospy.Subscriber('/mobile_base/sensors/core', SensorState, self.core_cb)
 
 		self.path = Path()
 		self.core = SensorState()
 		self.result = 0
-		self.goal = 0
+		self.cnt = 0
 
 		self.flag_goal = 0
-		self.bag = rosbag.Bag('test{}.bag'.format(self.goal), 'w')
+		self.bag = rosbag.Bag('test{}.bag'.format(self.cnt), 'w')
 
 	def odom_cb(self, data):
-		while (self.goal == self.flag_goal):
-			pass
-
 		self.path.header = data.header
 		pose = PoseStamped()
 		pose.header = data.header
@@ -39,22 +35,20 @@ class GuardarDatos():
 		self.path.poses.append(pose)
 		self.path_pub.publish(self.path)
 
-		self.bag.write('Path_Robot', self.path)
+		self.bag.write('path_robot', self.path)
 		self.bag.write('mobile_base/sensors/core', self.core)
 
 		if (self.result != 0):
 			rospy.loginfo(self.result)
 			self.result = 0
-			self.flag_goal = self.goal
+			self.flag_goal = self.cnt
 			self.path.poses = list()
 			self.bag.close()
-			self.bag = rosbag.Bag('test{}.bag'.format(self.goal), 'w')
+			self.cnt = self.cnt + 1
+			self.bag = rosbag.Bag('test{}.bag'.format(self.cnt), 'w')
 
 	def result_cb(self, data):
 		self.result = data.status.text
-
-	def goal_cb(self, data):
-		self.goal = data.header.seq
 
 	def core_cb(self, data):
 		self.core.header.seq = data.header.seq
@@ -73,4 +67,3 @@ class GuardarDatos():
 if __name__ == '__main__':
 	data_bag = GuardarDatos()
 	rospy.spin()
-

@@ -7,7 +7,7 @@
 
 	<maintainer email="sjimenez@todo.todo">sjimenez</maintainer>
 	<author email="sjimenez@todo.todo">sjimenez</author>
-  <license>BSD</license>
+	<license>BSD</license>
 
 	<buildtool_depend>catkin</buildtool_depend>
 

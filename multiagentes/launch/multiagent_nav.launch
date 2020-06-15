@@ -1,0 +1,44 @@
+<?xml version="1.0" ?>
+<launch>
+	<!-- ****** Params ****** -->
+	<param name="/use_sim_time" value="true"/>
+	<!-- ****** Map Server ****** -->
+	<node name="map_server" pkg="map_server" type="map_server" args="$(find multiagentes)/maps/empty_box.yaml" output="screen">
+		<param name="frame_id" value="/map" />
+	</node>
+  	<!-- ****** Stage ****** -->
+	<node pkg="stage_ros" type="stageros" name="stageros" args="$(find multiagentes)/stage/multi-agent.world">
+		<param name="base_watchdog_timeout" value="0.2"/>
+	</node>
+
+	<!--  ************** Navigation ***************  -->
+	<node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+		<!-- ********** Costmap Params ********** -->
+		<rosparam file="$(find multiagentes)/cfg/costmap_common_params.yaml" command="load" ns="global_costmap" />
+		<rosparam file="$(find multiagentes)/cfg/costmap_common_params.yaml" command="load" ns="local_costmap" />
+		<rosparam file="$(find multiagentes)/cfg/local_costmap_params.yaml" command="load" />
+		<rosparam file="$(find multiagentes)/cfg/global_costmap_params.yaml" command="load" />
+		<rosparam file="$(find multiagentes)/cfg/dwa_local_planner_params.yaml" command="load" />
+		<!-- ********** Global Planner ********** -->
+		<param name="base_global_planner" value="global_planner/GlobalPlanner" />
+		<!-- ********** Local Planner ********** -->
+		<param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS"/>
+		<!-- ********** Freq planner & controller ********** -->		
+		<param name="planner_frequency" value="1.0" />
+		<param name="planner_patience" value="5.0" />		
+		<param name="controller_frequency" value="4.0" />
+		<param name="controller_patience" value="12.0" />
+	</node>
+
+	<!--  ****** AMCL *****  -->
+	<node pkg="amcl" type="amcl" name="amcl" output="screen">
+		<rosparam file="$(find simulacion)/cfg/amcl_params.yaml" command="load" />
+		<param name="initial_pose_x" value="2.0"/>
+		<param name="initial_pose_y" value="2.0"/>
+		<param name="initial_pose_a" value="0.0"/>
+	</node>
+
+	<!-- ****** RVIZ Visualization ****** -->
+	<!-- <node name="rviz" pkg="rviz" type="rviz" args="-d $(find multiagentes)/rviz/multi_robot.rviz" /> -->
+
+</launch>
